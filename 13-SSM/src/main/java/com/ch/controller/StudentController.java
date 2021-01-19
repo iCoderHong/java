@@ -22,7 +22,6 @@ public class StudentController {
 
     @RequestMapping("/addStudent.do")
     public ModelAndView addStudent(Student student) throws StudentException {
-
         if (student.getName().equals("")) throw new NameException("提交的学生姓名为空");
         if (student.getAge() <= 0) throw new NameException("提交的学生年纪不合法");
 

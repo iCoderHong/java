@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="Order" class="com.ch.vo.Order">
+        <property name="id" value="1"></property>
+        <property name="totalPrice" value="1000.0"></property>
+        <!-- 引用类型的set属性注入 -->
+        <property name="user" ref="User"></property>
+    </bean>
+
+    <bean id="User" class="com.ch.domain.User">
+        <!-- 简单数据类型:基本数据类型+String 底层通过反射调用对象set方法属性赋值 -->
+        <property name="id" value="1"></property>
+        <property name="name" value="Jack"></property>
+        <!--
+            构造属性赋值
+            constructor-arg一个构造形参 name形参的名称
+            <constructor-arg name="id" value="20"></constructor-arg>
+            <constructor-arg name="name" value="Jack"></constructor-arg>
+
+            构造方法index 属性赋值
+            <constructor-arg index="0" value="20"></constructor-arg>
+            <constructor-arg index="1" value="Jack"></constructor-arg>
+         -->
+    </bean>
+
+        <!--<bean id="UserService" class="com.ch.service.impl.StudentServiceImpl" autowire="byName"/>-->
+        <!--<bean id="UserService" class="com.ch.service.impl.StudentServiceImpl" autowire="byType"/>-->
+    <bean id="UserService" class="com.ch.service.impl.StudentServiceImpl">
+        <property name="userDao" ref="OrcalUserDao"></property>
+    </bean>
+
+    <bean id="MySqlUserDaoImpl" class="com.ch.dao.impl.MySqlUserDaoImpl"/>
+    <bean id="OrcalUserDao" class="com.ch.dao.impl.OrcalUerDaoImpl"/>
+</beans>

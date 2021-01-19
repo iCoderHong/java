@@ -1,0 +1,90 @@
+JSP
+
+    hello.jsp
+    index.jsp
+    编译完成生成hello_jsp.class  index_jsp.class
+
+    IDEA中JSP编译后的文件目录/Users/coderhong/Library/Caches/JetBrains/IntelliJIdea2020.1/tomcat
+
+    hello_jsp index_jsp都继承org.apache.jasper.runtime.HttpJspBase
+    HttpJspBase 继承 avax.servlet.http.HttpServlet
+
+    因此每一个jsp文件最终都是一个Servlet
+
+
+    JSP写法
+        java脚本 <% Java代码 %> 等价在service方法中添加Java代码
+        表达式 <%! %> 等价在xxx_jsp.class中的类声明 比如 类的方法 成员变量
+        声明 <%= %> 等价在service方法中 out.println(声明中的内容);
+
+    JSP的HTML代码都是在service方法out.println("");输出到响应体中的
+
+<%
+    域对象
+    application
+    session
+    request
+    response
+    pageContext
+%>
+
+
+EL工具包 是一个由Java开发的工具包
+    专门用哦关于从域对象读取数据并写入到响应体
+    EL工具自动存在Tomcat中的lib(el-api.jar)
+    开发时,可以直接使用不需要额外导包
+EL表达式的域对象
+    ${applicationScope}
+    ${sessionScope}
+    ${requestScope}
+    ${pageScope}
+
+
+/********************JSP文件编译后的.java类简化代码*************************/
+package org.apache.jsp;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.jsp.*;
+
+public final class hello_jsp extends HttpJspBase {
+
+  public void _jspInit() {
+  }
+
+  public void _jspDestroy() {
+
+  }
+
+  public void _jspService(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+
+    // 九大作用域对象是声明在service方法中的
+    final javax.servlet.jsp.PageContext pageContext;
+    HttpSession session = null;
+    final ServletContext application;
+    final ServletConfig config;
+    JspWriter out = null;
+    Object page = this;
+
+    try {
+      response.setContentType("text/html;charset=UTF-8");
+      pageContext = _jspxFactory.getPageContext(this, request, response, null, true, 8192, true);
+      application = pageContext.getServletContext();
+      config = pageContext.getServletConfig();
+      session = pageContext.getSession();
+      out = pageContext.getOut();
+      _jspx_out = out;
+
+      out.write("\n");
+      out.write("\n");
+      out.write("<html>\n");
+      out.write("<head>\n");
+      out.write("    <title>Hello</title>\n");
+      out.write("</head>\n");
+      out.write("<body>\n");
+      out.write("\n");
+      out.write("</body>\n");
+      out.write("</html>\n");
+    }
+}
+/**************************************************************************/

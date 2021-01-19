@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace命名空间的唯一 建议Dao接口的全限定名
+<mapper>
+    sql语句.... insert update delete select
+</mapper>
+-->
+<mapper namespace="com.ch.dao.StudentDao">
+
+    <!--
+    select代表查询的语句
+    id要执行语句的唯一标识 推荐接口中的方法名
+    resultType告诉mybatis结果
+
+    参数为一个简单类型(Java基本数据类型+String) parameterType可以省略 #{任意字符}
+    参数为多个简单类型(Java基本数据类型+String) 需要使用命名参数@Param 或者使用Java对象
+
+    #{} 与 ${}区别
+        #{} MyBatis 内部PrepareStatement执行sql语句
+        ${} MyBatis 内部Statement执行sql语句  存在SQL注入
+
+    resultType执行select是使用 表示结果类型 MyBatis通过resultType指定类型对查询到的ResultSet进行数据封装
+
+    动态sql if where foreach sql
+    使用场景: 多条件查询
+
+    if
+        <if test="boolean判断结果">
+            sql代码
+        </if>
+
+        <select id="selectStudentById" parameterType="integer" resultType="Student">
+            select id, name, age from student (主sql)
+            where
+            <if test="name != null and name != """>
+                or name = #{name}
+            </if>
+            <if test="age > 0">
+                or age $lt; #{age}
+            </if>
+        </select>
+
+    where
+        <select id="selectStudentById" parameterType="integer" resultType="Student">
+            select id, name, age from student (主sql)
+            <where>
+                <if test="name != null and name != """>
+                    or name = #{name}
+                </if>
+                <if test="age > 0">
+                    or age $lt; #{age}
+                </if>
+            </where>
+        </select>
+
+    foreach
+        Dao方法形参类型如果是数组 collection = "array"  如果是List类型 collection = "list"
+        <foreach collection="集合类型" open="开始的字符" close="结束的字符" item="集合中的成员" separator="集合之间成员分隔符">
+            #{item的值}
+        </foreach>
+
+
+        <foreach collection="array" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+
+        <select id="selectStudentById" resultType="Student">
+            select id, name, age from student where id in
+            <foreach collection="array" open="(" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </select>
+    -->
+    <select id="selectStudentById" parameterType="integer" resultType="Student">
+        select id, name, age from student where id = #{studentId}
+    </select>
+
+    <insert id="insertStudent">
+        insert into student (name , age) values (#{name}, #{age})
+    </insert>
+
+    <select id="selectAllStudents" resultType="Student">
+        select id, name, age from student
+    </select>
+
+    <delete id="deleteStudentById">
+        delete from student where id = #{studentId}
+    </delete>
+
+    <select id="selectByNameOrAge" resultType="Student">
+        select id, name, age from student where name = #{name} or age = #{age}
+    </select>
+
+    <select id="countStudent" resultType="long">
+        select count(*) from student
+    </select>
+
+    <!-- resultType="java.util.Map" 结果只能是一条记录 -->
+    <select id="selectMap" resultType="java.util.Map">
+        select id, name, age from student where id = #{studentId}
+    </select>
+
+    <!--
+        resultMap: 列名和属性名不同 resultMap和resultType二选一
+        <resultMap id="StudentMap" type="com.ch.domain.Student">
+            <id column="id" property="id"/> 主键使用id
+            <result column="name" property="name"/> 非主键使用result
+        </resultMap>
+
+        <select id="selectStudentById" resultMap="StudentMap">
+            select id, name, age from student where id = #{studentId}
+        </select>
+    -->
+
+
+    <select id="selectLike" resultType="Student">
+        select id, name, age from student where name like #{name}
+        <!-- select id, name, age from student where name like '%${name}%' -->
+    </select>
+
+</mapper>

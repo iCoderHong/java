@@ -1,0 +1,18 @@
+JDBC本质是什么
+    JDBC是SUN公司制定的一套接口(interface)
+    java.sql.*
+
+    数据库的厂家负责提供JDBC接口实现 也就是数据库驱动
+
+面向接口编程
+    解耦合 降低程序的耦合度 提高程序的扩展性
+
+为什么SUN制定一套JDBC接口
+    因为每一个数据库底层原理实现是不一样的
+    Oracle数据库都有自己的原理 ..... 每一个数据库产品都有自己的一套实现原理
+
+
+CREATE DATABASE IF NOT EXISTS db1
+DEFAULT CHARACTER SET utf8;
+DEFAULT COLLATE utf8_chinese_ci;
+使用 MySQL 命令行工具创建一个测试数据库，命名为 db1，指定其默认字符集为 utf8，默认校对规则为 utf8_chinese_ci（简体中文，不区分大小写）

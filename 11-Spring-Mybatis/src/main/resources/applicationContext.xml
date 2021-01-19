@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 加载properties配置文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--  注解方式:需要添加组件声明扫描器  -->
+    <context:component-scan base-package="com.ch"/>
+
+    <!--  声明数据源  -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+
+    <!-- 声明SqlSessionFactoryBean在这个类的内部 创建SqlSessionFactory -->
+    <bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 指定数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 指定MyBatis主配置文件 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <!-- 声明MapperScannerConfigurer
+       遍历basePackage包下每个接口 调用SqlSession.getMapper(接口) 把每个dao接口都创建出代理对象 将代理对象放入容器中
+     -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--指定SqlSessionFactory对象的名称 -->
+        <property name="sqlSessionFactoryBeanName" value="factory"/>
+        <!-- 指定基本包 dao所在的包名 -->
+        <property name="basePackage" value="com/ch/dao"/>
+    </bean>
+
+</beans>

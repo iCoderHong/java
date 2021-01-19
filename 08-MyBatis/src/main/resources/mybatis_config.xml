@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--引入外部properties文件 必须放在最前面,否则会报错 -->
+    <properties resource="jdbc.properties"/>
+
+    <!-- 设置日志-->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <!-- 声明别名: 给类型自定义别名 通常自定类型 可以在Mapper文件中使用 -->
+    <typeAliases>
+        <!--<typeAlias type="com.ch.domain.Student" alias="Student"/>-->
+        <!--name是指定包名 类名作为类的全限定别名 -->
+        <package name="com.ch.domain"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <!-- 使用JDBC事务管理 -->
+            <transactionManager type="JDBC"/>
+            <!-- 数据库连接池 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driverClass}"/>
+                <!-- html实体
+                <property name="url" value="jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/> -->
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="product">
+            <!--
+                transactionManager事务管理器的类型
+                type属性值
+                    JDBC    事务交给MyBatis管理
+                    MANAGED 事务交给容器管理(比如spring)
+            -->
+            <transactionManager type="JDBC"/>
+            <!--
+            数据库连接池
+                type POOLED MyBatis会使用PooledDataSource通过连接池管理多个Connection
+            -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driverClass}"/>
+                <!-- html实体
+                <property name="url" value="jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/> -->
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 指定其它mapper文件位置 注册声明的sql语句 路径是从类路径开始的 / 分隔符 -->
+    <mappers>
+        <!--第一种方式: 单个Mapper文件制定-->
+        <!--<mapper resource="com/ch/dao/StudentDao.xml"/>-->
+
+        <!--
+            第二种方式: 包制定
+            条件 1.dao接口和mapper文件在同一包下 2.dao接口名和mapper文件名相同
+        -->
+        <package name="com.ch.dao"/>
+    </mappers>
+</configuration>
